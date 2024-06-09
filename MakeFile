@@ -1,0 +1,69 @@
+# Directories to compile
+include_dirs = -I./include
+
+# The .cpp files to compile
+dirs_cpp_files = $(wildcard include/*.cpp include/*/*.cpp src/*.cpp)
+
+# Generate list of object files
+object_files = $(patsubst %.cpp,bin/out/%.o,$(notdir $(dirs_cpp_files)))
+
+# The libraries dependencies
+lib_deps = -L/msys64/mingw64/lib \
+           -lSDL2 \
+           -lSDL2_ttf \
+           -lSDL2_image
+
+# Folder to put the output
+bin_dir = ./bin/out
+
+# The name of the output file
+output_file_name = main.exe
+
+# Default command to create the output directory
+CHECK_OUT_DIR ?= $(@shell mkdir -p $(bin_dir))
+
+# Default target
+all: $(bin_dir)/$(output_file_name)
+
+# Link the object files to create the executable
+bin/$(output_file_name): $(object_files)
+	@echo "--> Building the project..."
+	@$(CHECK_OUT_DIR)
+	@echo "---------------- C++ COMPILATION OUTPUT --------------------------------"
+	@g++ -o $@ $^ $(lib_deps)
+	@echo "------------------ COMPILATION FINISHED --------------------------------"
+
+# Rule to compile .cpp files into .o files
+$(bin_dir)/%.o: include/%.cpp
+	@echo "--------------------------------"
+	@echo " --> Compiling: $<"
+	@$(CHECK_OUT_DIR)
+	@g++ $(include_dirs) -c $< -o $@
+	@echo "--------------------------------"
+
+$(bin_dir)/%.o: include/*/%.cpp
+	@echo "--------------------------------"
+	@echo " --> Compiling: $<"
+	@$(CHECK_OUT_DIR)
+	@g++ $(include_dirs) -c $< -o $@
+	@echo "--------------------------------"
+
+$(bin_dir)/%.o: src/%.cpp
+	@echo "--------------------------------"
+	@echo " --> Compiling: $<"
+	@$(CHECK_OUT_DIR)
+	@g++ $(include_dirs) -c $< -o $@
+	@echo "--------------------------------"
+
+run: bin/$(output_file_name)
+	@echo "---------------- RUNNING PROJECT ----------------"
+	@bin/$(output_file_name)
+	@echo "---------------- STOPPING PROJECT ---------------"
+
+clean:
+	$(shell rm -rf $(bin_dir)/*.o $(bin_dir)/$(output_file_name))
+	@echo "Cleaned output"
+
+show:
+# Display the name of the current shell
+	echo $(SHELL)
