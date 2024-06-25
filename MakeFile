@@ -57,7 +57,7 @@ $(bin_dir)/%.o: src/%.cpp
 
 run: bin/$(output_file_name)
 	@echo "---------------- RUNNING PROJECT ----------------"
-	@bin/$(output_file_name)
+	bin/$(output_file_name) $(IMAGE_NAME)
 	@echo "---------------- STOPPING PROJECT ---------------"
 
 clean:

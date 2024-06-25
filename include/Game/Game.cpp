@@ -66,7 +66,6 @@ bool Game::Init(const char *title, int xpos, int ypos, int w, int h, int _FrameR
 
 void Game::ProcessImage(const char * _path, bool _renderIt)
 {
-	std::cout << _path << "Asd";
 	SDL_Surface * image = IMG_Load(_path);
 
 	if (!image)
