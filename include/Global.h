@@ -6,7 +6,7 @@ class Map;
 class Player;
 
 #include "Utils.h"
-#include "./Player/Player.h"
+#include ".\Player\Player.h"
 
 #define DEFAULTSIZE_WIDTH 1280
 #define DEFAULTSIZE_HEIGTH 720

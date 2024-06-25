@@ -77,4 +77,25 @@ namespace Utils {
 		// I also removed the RenderPresent funcion as it is not needed here
 		return result;
 	}
+
+	inline long map_value(long x, long in_min, long in_max, long out_min, long out_max) {
+  		return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+	}
+
+	template<typename T = int>
+	inline T max(T _arg1, T _arg2, T _arg3) 
+	{
+		T maxNumber = _arg1;
+		if (_arg2 > maxNumber) maxNumber = _arg2;
+		if (_arg3 > maxNumber) maxNumber = _arg3;
+		return maxNumber;
+	}
+
+	inline int promedio(std::vector<int> _args)
+	{
+		int result = 0;
+		for (int arg : _args)
+			result += arg;
+		return int(result/_args.size());
+	}
 };

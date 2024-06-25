@@ -7,21 +7,24 @@ bool Game::Init(const char *title, int xpos, int ypos, int w, int h, int _FrameR
 {
 	bool status = true;
 	std::cout << "Initializing sub-systems" << std::endl;
-	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+	{
 		LOG_ERROR(SDL_GetError());
 		status = false;
 	}
 
 	std::cout << "Creating window..." << std::endl;
 	m_window = SDL_CreateWindow(title, xpos, ypos, w, h, flags);
-	if (!m_window){
+	if (!m_window)
+	{
 		status = false;
 		LOG_ERROR("Failed creating window...");
 	}
 
 	std::cout << "Creating renderer..." << std::endl;
-	m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED); 
-	if (!m_renderer){
+	m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
+	if (!m_renderer)
+	{
 		status = false;
 		LOG_ERROR("Failed creating renderer...");
 	}
@@ -30,13 +33,15 @@ bool Game::Init(const char *title, int xpos, int ypos, int w, int h, int _FrameR
 
 	std::cout << "Creating surface..." << std::endl;
 	m_surface = SDL_GetWindowSurface(m_window);
-	if (!m_surface){
+	if (!m_surface)
+	{
 		status = false;
-		LOG_ERROR( "Failed creating surface...");
+		LOG_ERROR("Failed creating surface...");
 	}
 
 	std::cout << "Intializing text system..." << std::endl;
-	if (TTF_Init() < 0){
+	if (TTF_Init() < 0)
+	{
 		status = false;
 		LOG_ERROR("TTF initialization failed. ");
 	}
@@ -48,7 +53,50 @@ bool Game::Init(const char *title, int xpos, int ypos, int w, int h, int _FrameR
 	// Declarations
 	g_player = new Player({50, 50, 100, 100}, "./Assets/Ogro/Sprite_0.png", 1000);
 
+	std::cout << "Loading Textures..." << std::endl;
+	SDL_Surface * image = IMG_Load(URL_ASSETS "img/2magui.png");
 
+	if (!image)
+	{
+		status = false;
+		LOG_ERROR("Failed loading textures...");
+	}
+
+	std::string letters = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft|()1{}[]?-_+~<>i!lI;:,^`'. _-. ";
+	SDL_PixelFormat *fmt = image->format;
+	Uint32 temp = 0;
+	if (fmt->BitsPerPixel != 8)
+		fprintf(stderr, "Not an 8-bit surface.\n");
+
+	SDL_Color color;
+	std::cout << (int)fmt->BytesPerPixel << " Bytes\n";
+	SDL_LockSurface(image);
+
+	for (int y = 0; y < image->h; y ++)
+	{
+		for (int x = 0; x < image->w; x ++)
+		{
+			Uint32 *pixel = (Uint32 *)((Uint8*) image->pixels + y * image->pitch + x * fmt->BytesPerPixel);
+
+			Uint8 red	= *pixel & fmt->Rmask;
+			Uint8 green = *pixel & fmt->Gmask;
+			Uint8 blue 	= *pixel & fmt->Bmask;
+			Uint8 alpha = *pixel & fmt->Amask;
+
+			int promedio = Utils::promedio(std::vector<int>{red, green, blue});
+
+			if (promedio <= 0) continue;
+
+			*pixel = SDL_MapRGBA(fmt, promedio, promedio, promedio, 200);
+		}
+		double completed = y/image->h;
+		std::cout << completed << "%" << std::endl;
+	}
+	
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(m_renderer, image);
+	SDL_UnlockSurface(image);
+	SDL_RenderCopy(m_renderer, texture, NULL, NULL);
+	SDL_RenderPresent(m_renderer);
 	// All passed
 	std::cout << "----------- ALL DONE -----------" << std::endl;
 	m_event = new SDL_Event();
@@ -97,11 +145,10 @@ void Game::HandleEvents()
 /// @returns nothing
 void Game::Renderer()
 {
-	SDL_RenderClear(m_renderer);
+	//SDL_RenderClear(m_renderer);
 	// Add stuff to render
-	g_player->Draw(m_renderer);
-	
-	SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 0);
+
+	//SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 0);
 	SDL_RenderPresent(m_renderer);
 }
 
@@ -123,7 +170,6 @@ void Game::Clear()
 /// @returns nothing
 void Game::Update()
 {
-	g_player->Update(m_time);
 }
 
 ///	Main while of the game
@@ -131,7 +177,7 @@ void Game::Update()
 /// @returns nothing
 void Game::Run()
 {
-	
+
 	while (m_running)
 	{
 		m_time.p_start = SDL_GetPerformanceCounter();
@@ -154,7 +200,7 @@ void Game::Run()
 			SDL_Delay(floor(m_framerate - m_time.t_elapsed));
 		}
 
-		SDL_Log("DELTA TIME: %f", m_time.deltaTime);
+		//SDL_Log("DELTA TIME: %f", m_time.deltaTime);
 	}
 
 	this->Clear();

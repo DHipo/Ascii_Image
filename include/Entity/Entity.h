@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL2/sdl.h>
-#include "../Utils.h"
+#include "..\Utils.h"
 #include <SDL2/SDL_image.h>
 #include <iostream>
 

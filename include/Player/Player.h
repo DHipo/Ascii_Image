@@ -1,8 +1,8 @@
 #pragma once
-#include "../Entity/Entity.h"
+#include "..\Entity\Entity.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_stdinc.h>
-#include "../Utils.h"
+#include "..\Utils.h"
 
 class Player : public Entity
 {

@@ -3,9 +3,11 @@
 #include <cmath>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
-#include "../Utils.h"
-#include "../Global.h"
-#include "../Entity/Entity.h"
+#include <SDL2/SDL_image.h>
+#include <algorithm>
+#include "..\Utils.h"
+#include "..\Entity\Entity.h"
+#include "..\Global.h"
 
 class Game
 {

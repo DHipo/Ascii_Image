@@ -1,5 +1,5 @@
 #define SDL_MAIN_HANDLED
-#include "../include/Game/Game.h"
+#include "..\include\Game\Game.h"
 
 int main(int argc, char** argv)
 {
@@ -15,6 +15,6 @@ int main(int argc, char** argv)
 		)
 	)
 	app.Run();
-
 	return 0;
+
 }
