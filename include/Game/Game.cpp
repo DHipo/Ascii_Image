@@ -102,7 +102,7 @@ void Game::ProcessImage(const char * _path, bool _renderIt)
 			
 			if (promedio > 0) *pixel = SDL_MapRGBA(fmt, promedio, promedio, promedio, 200);
 
-			file << letters[Utils::map_value(promedio, 255, 0, 0, letters.size())];
+			file << letters[Utils::map_value(promedio, 255, 0, 0, letters.size())] << " ";
 		}
 		file << "\n";
 	}
