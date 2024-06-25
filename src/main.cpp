@@ -12,8 +12,17 @@ int main(int argc, char** argv)
 	}
 
 	Game app;
+
+	if (argc <= 2)
+	{
+		std::string path(URL_ASSETS "img/");
+		path.append(argv[1]);
+		app.ProcessImage(path.c_str(), false);
+		return 0;
+	}
+
 	if ( app.Init(
-		"Template", 
+		"Ascii image converter", 
 		SDL_WINDOWPOS_CENTERED, 
 		SDL_WINDOWPOS_CENTERED, 
 		DEFAULTSIZE_WIDTH, 
@@ -23,12 +32,12 @@ int main(int argc, char** argv)
 		)
 	)
 	{
-
 		std::string path(URL_ASSETS "img/");
 		path.append(argv[1]);
 		app.ProcessImage(path.c_str(), true);
 		app.Run();
 	}
+	
 	return 0;
 
 }

@@ -31,6 +31,7 @@ public:
 	~Game();
 
 	bool Init(const char* title, int xpos, int ypos, int w, int h, int maxframerate,uint32_t flags);
+	bool Init();
 
 	void HandleEvents();
 	void Run();
