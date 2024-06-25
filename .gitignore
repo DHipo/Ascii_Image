@@ -29,3 +29,6 @@
 *.app
 
 .vscode
+*.png
+*.jpg
+*.bmp

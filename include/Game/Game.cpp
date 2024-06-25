@@ -79,7 +79,7 @@ void Game::ProcessImage(const char * _path, bool _renderIt)
 	if (fmt->BitsPerPixel != 8)
 		fprintf(stderr, "Not an 8-bit surface.\n");
 
-	std::string letters = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft|()1{}[]?-_+~<>i!lI;:,^`'. _-. ";
+	std::string letters = "MW#8&%@BRDHQGPVZN$XOAUECFLYSJTkW5h93dMbKn0pq4g1z76y2mvaRfsILuxwjecltniro(){}[]<>?|/\\+=~-_\"\'^`.;:!, ";
 	
 	//Create file with image
 	std::ofstream file("./bin/output.txt");
@@ -102,7 +102,7 @@ void Game::ProcessImage(const char * _path, bool _renderIt)
 			
 			if (promedio > 0) *pixel = SDL_MapRGBA(fmt, promedio, promedio, promedio, 200);
 
-			file << letters[Utils::map_value(promedio, 0, 255, letters.size(), 0)];
+			file << letters[Utils::map_value(promedio, 255, 0, 0, letters.size())];
 		}
 		file << "\n";
 	}
