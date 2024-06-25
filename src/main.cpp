@@ -14,7 +14,10 @@ int main(int argc, char** argv)
 		SDL_WINDOW_RESIZABLE | SDL_WINDOW_MAXIMIZED
 		)
 	)
-	app.Run();
+	{
+		app.ProcessImage(URL_ASSETS "/img/agus.png", true);
+		app.Run();
+	}
 	return 0;
 
 }

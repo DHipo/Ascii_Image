@@ -54,21 +54,37 @@ bool Game::Init(const char *title, int xpos, int ypos, int w, int h, int _FrameR
 	g_player = new Player({50, 50, 100, 100}, "./Assets/Ogro/Sprite_0.png", 1000);
 
 	std::cout << "Loading Textures..." << std::endl;
-	SDL_Surface * image = IMG_Load(URL_ASSETS "img/2magui.png");
+	
+	// All passed
+	std::cout << "----------- ALL DONE -----------" << std::endl;
+	m_event = new SDL_Event();
+
+	m_framerate = 1000.0f / _FrameRate;
+	m_running = status;
+	return status;
+};
+
+void Game::ProcessImage(const char * _path, bool _renderIt)
+{
+	std::cout << _path << "Asd";
+	SDL_Surface * image = IMG_Load(_path);
 
 	if (!image)
 	{
-		status = false;
 		LOG_ERROR("Failed loading textures...");
+		return;
 	}
 
-	std::string letters = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft|()1{}[]?-_+~<>i!lI;:,^`'. _-. ";
 	SDL_PixelFormat *fmt = image->format;
 	Uint32 temp = 0;
 	if (fmt->BitsPerPixel != 8)
 		fprintf(stderr, "Not an 8-bit surface.\n");
 
-	SDL_Color color;
+	std::string letters = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft|()1{}[]?-_+~<>i!lI;:,^`'. _-. ";
+	
+	//Create file with image
+	std::ofstream file("./bin/output.txt");
+
 	std::cout << (int)fmt->BytesPerPixel << " Bytes\n";
 	SDL_LockSurface(image);
 
@@ -84,27 +100,24 @@ bool Game::Init(const char *title, int xpos, int ypos, int w, int h, int _FrameR
 			Uint8 alpha = *pixel & fmt->Amask;
 
 			int promedio = Utils::promedio(std::vector<int>{red, green, blue});
+			
+			if (promedio > 0) *pixel = SDL_MapRGBA(fmt, promedio, promedio, promedio, 200);
 
-			if (promedio <= 0) continue;
-
-			*pixel = SDL_MapRGBA(fmt, promedio, promedio, promedio, 200);
+			file << letters[Utils::map_value(promedio, 0, 255, 0, letters.size())];
 		}
-		double completed = y/image->h;
-		std::cout << completed << "%" << std::endl;
+		file << "\n";
 	}
-	
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(m_renderer, image);
-	SDL_UnlockSurface(image);
-	SDL_RenderCopy(m_renderer, texture, NULL, NULL);
-	SDL_RenderPresent(m_renderer);
-	// All passed
-	std::cout << "----------- ALL DONE -----------" << std::endl;
-	m_event = new SDL_Event();
 
-	m_framerate = 1000.0f / _FrameRate;
-	m_running = status;
-	return status;
-};
+	file.close();
+	if(_renderIt)
+	{
+		SDL_Texture* texture = SDL_CreateTextureFromSurface(m_renderer, image);
+		SDL_RenderCopy(m_renderer, texture, NULL, NULL);
+		SDL_RenderPresent(m_renderer);
+	}
+
+	SDL_UnlockSurface(image);
+}
 
 // Manejador de eventos
 void Game::HandleEvents()

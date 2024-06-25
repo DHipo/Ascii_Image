@@ -5,6 +5,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 #include <algorithm>
+#include <fstream>
 #include "..\Utils.h"
 #include "..\Entity\Entity.h"
 #include "..\Global.h"
@@ -37,6 +38,7 @@ public:
 	void Clear();
 	void Renderer();
 
+	void ProcessImage(const char *, bool _renderIt = true);
 	void displayText(const std::string, const Utils::Vec2, const Utils::Vec2);
 
 	inline bool GetRunningState() {return m_running;}

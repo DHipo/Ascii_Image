@@ -23,7 +23,7 @@ output_file_name = main.exe
 CHECK_OUT_DIR ?= $(@shell mkdir -p $(bin_dir))
 
 # Default target
-all: $(bin_dir)/$(output_file_name)
+all: ./bin/$(output_file_name)
 
 # Link the object files to create the executable
 bin/$(output_file_name): $(object_files)
