@@ -53,7 +53,7 @@ Antes de comenzar, asegúrate de tener instalados los siguientes componentes:
 1. **Ejecuta el proyecto**:
 
     ```sh
-    make IMAGE_NAME={"name of image in the assets/img folder"} run
+    make IMAGE_NAME="name of image in the assets/img folder" run
     ```
 
 ## Estructura del Proyecto
